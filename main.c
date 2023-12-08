@@ -28,7 +28,7 @@ typedef struct
 } headerList;
 
 
-//Funcao que cria o no, recebe o endereco do contato, o endereco do proximo e o endereco do anterior
+//Funcao que cria o no: recebe o endereco do contato
 struct node* createNode(contato c){
     node *newNode = (node*) malloc(sizeof(node));
     if (newNode != NULL)
@@ -48,7 +48,6 @@ void toLowerCase(char str[]) {
 
 
 //Funcao que vai dizer se a inicial de uma palavra é maior que a outra: deve receber primeiro a string do nó existente e depois a do nó novo
-//Usar tolower
 bool isBefore(char word1[100], char word2[100]){
     char word1Lower[100]; 
     char word2Lower[100];
@@ -61,7 +60,7 @@ bool isBefore(char word1[100], char word2[100]){
     }else return false;
 };
 
-//Retorna a posicao que do primeiro contato depois do recém criado
+//Retorna a posicao que do contato que deve ficar no next do contato criado. Se for o último, retorna NUll
 node* findPosition(node *n, contato c){
     //Condição que vai pegar o último nó e retornar se o novo nó deve ficar antes ou depois dele
     if(n->next == NULL){
@@ -82,7 +81,7 @@ node* findPosition(node *n, contato c){
 void addToList(contato c, headerList *header){
     if(header->size == 0){
         //Cria a lista
-        printf("criei a lista");
+        printf("\n-----\nLista Criada\n-----\n");
         node *newNode = createNode(c);
         newNode->previous= NULL;
         newNode->next= NULL;
@@ -90,19 +89,17 @@ void addToList(contato c, headerList *header){
         header->size++;
         }
     else{
-        node *newNodeNewxtNode = findPosition(header->first, c);
-        if(newNodeNewxtNode == NULL){
-            //Se o novo contato for pro último da lista
-            printf("sou o ultimo");
+        node *newNodeNextNode = findPosition(header->first, c);
+        if(newNodeNextNode == NULL){
+            //Se o novo contato for pra última posição  da lista
             node *newNode = createNode(c);
             newNode->next = NULL;
             header->last->next = newNode;
             newNode->previous = header->last;
             header->last = newNode;
             header->size++;
-        }else if (newNodeNewxtNode == header->first){
+        }else if (newNodeNextNode == header->first){
             //Se o novo contato for pra primeira posição da lista
-            printf("DEvo ir pra primeira posição");
             node *newNode = createNode(c);
             newNode->next = header->first;
             newNode->previous = NULL;
@@ -110,14 +107,14 @@ void addToList(contato c, headerList *header){
             header->first = newNode;
             header->size++;
         }else{
-            printf("entro no meio");
+            //Quando o novo contato fica no meio
             node *pAuxPrevious;
             node *newNode = createNode(c);
-            pAuxPrevious = newNodeNewxtNode -> previous;
-            newNode->next= newNodeNewxtNode;
+            pAuxPrevious = newNodeNextNode -> previous;
+            newNode->next= newNodeNextNode;
             pAuxPrevious->next = newNode;
             newNode->previous = pAuxPrevious;
-            newNodeNewxtNode->previous = newNode;
+            newNodeNextNode->previous = newNode;
             header->size++;
         }       
     }    
