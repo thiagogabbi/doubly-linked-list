@@ -177,10 +177,10 @@ int deleteFromListByIndex(int index, node *no, int cont, headerList *header){
         return 0;
     }else if(index == header->size){
         //se é o último elemtno da lista
-        node *paux = header->first->previous;
+        node *paux = header->last->previous;
         header->last = paux;
         paux->next = NULL;
-        free(no);
+        free(header->last);
         header->size--;
         return 0;
     }else{
